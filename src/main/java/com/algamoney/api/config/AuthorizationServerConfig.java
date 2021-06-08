@@ -1,7 +1,6 @@
 package com.algamoney.api.config;
 
-import java.util.Arrays;
-
+import com.algamoney.api.config.token.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import com.algamoney.api.config.token.CustomTokenEnhancer;
+import java.util.Arrays;
 
 // Biblioteca spring-security-oauth2 (pom.xml)
 // Classe para dar autorização ao Client (angular) para acessar a aplicação (fazer requisições)
@@ -26,7 +25,7 @@ import com.algamoney.api.config.token.CustomTokenEnhancer;
 // Classe para uso em produção
 // depende da configuração spring.profiles.active=oauth-security no application.properties
 
-@Profile("oauth-security") // Classe só fica ativa se no application.properties -> spring.profiles.active=oauth-security
+@Profile("prod") // Classe só fica ativa se no application.properties -> spring.profiles.active=oauth-security
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {

@@ -16,7 +16,7 @@ import com.algamoney.api.config.property.AlgamoneyApiProperty;
 // Classe para dar logout na aplicação.
 // A idéia é limpar o cookie refreshToken, dar valor nulo para ele, impedindo dessa forma o acesso
 
-@Profile("oauth-security")
+@Profile("prod")
 @RestController
 @RequestMapping("/tokens")
 public class TokenResource {
