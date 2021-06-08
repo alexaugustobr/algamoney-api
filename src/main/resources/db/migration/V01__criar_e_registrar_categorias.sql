@@ -3,8 +3,8 @@ CREATE TABLE categoria (
 	nome VARCHAR(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO categoria (nome) values ('Lazer');
-INSERT INTO categoria (nome) values ('Alimentação');
-INSERT INTO categoria (nome) values ('Supermercado');
-INSERT INTO categoria (nome) values ('Farmácia');
-INSERT INTO categoria (nome) values ('Outros');
+INSERT INTO categoria (codigo, nome) values (1, 'Lazer');
+INSERT INTO categoria (codigo, nome) values (2, 'Alimentação');
+INSERT INTO categoria (codigo, nome) values (3, 'Supermercado');
+INSERT INTO categoria (codigo, nome) values (4, 'Farmácia');
+INSERT INTO categoria (codigo, nome) values (5, 'Outros');
