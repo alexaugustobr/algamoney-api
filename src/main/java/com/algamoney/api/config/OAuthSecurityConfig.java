@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 // Classe para uso em produção
 // depende da configuração spring.profiles.active=oauth-security no application.properties
 
-@Profile("prod") // Classe só fica ativa se no application.properties -> spring.profiles.active=oauth-security
+@Profile("oauth-security") // Classe só fica ativa se no application.properties -> spring.profiles.active=oauth-security
 @Configuration
 @EnableWebSecurity
 public class OAuthSecurityConfig extends WebSecurityConfigurerAdapter {
