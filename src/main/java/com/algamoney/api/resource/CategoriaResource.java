@@ -1,11 +1,8 @@
 package com.algamoney.api.resource;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.algamoney.api.event.RecursoCriadoEvent;
+import com.algamoney.api.model.Categoria;
+import com.algamoney.api.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -18,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algamoney.api.event.RecursoCriadoEvent;
-import com.algamoney.api.model.Categoria;
-import com.algamoney.api.repository.CategoriaRepository;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.List;
 
 // Classe que disponibiliza recursos de /categorias para os clientes
 
@@ -86,8 +83,8 @@ public class CategoriaResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA') and #oauth2.hasScope('read')")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Categoria> obj = categoriaRepository.findById(codigo);
-		return !obj.isEmpty() ? ResponseEntity.ok(obj.get()) : ResponseEntity.notFound().build();
+		Categoria obj = categoriaRepository.findOne(codigo);
+		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
 	}
 	// -------------------------------------------------------------------------------
 	

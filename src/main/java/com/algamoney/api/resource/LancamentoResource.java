@@ -1,12 +1,13 @@
 package com.algamoney.api.resource;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.algamoney.api.event.RecursoCriadoEvent;
+import com.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler.Erro;
+import com.algamoney.api.model.Lancamento;
+import com.algamoney.api.repository.LancamentoRepository;
+import com.algamoney.api.repository.filter.LancamentoFilter;
+import com.algamoney.api.repository.projection.ResumoLancamento;
+import com.algamoney.api.service.LancamentoService;
+import com.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -27,14 +28,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algamoney.api.event.RecursoCriadoEvent;
-import com.algamoney.api.exceptionhandler.AlgamoneyExceptionHandler.Erro;
-import com.algamoney.api.model.Lancamento;
-import com.algamoney.api.repository.LancamentoRepository;
-import com.algamoney.api.repository.filter.LancamentoFilter;
-import com.algamoney.api.repository.projection.ResumoLancamento;
-import com.algamoney.api.service.LancamentoService;
-import com.algamoney.api.service.exception.PessoaInexistenteOuInativaException;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 
 // Classe que disponibiliza recursos de /lancamentos para os clientes
 
@@ -99,8 +96,8 @@ public class LancamentoResource {
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Lancamento> obj = lancamentoRepository.findById(codigo);
-		return !obj.isEmpty() ? ResponseEntity.ok(obj.get()) : ResponseEntity.notFound().build();
+		Lancamento obj = lancamentoRepository.findOne(codigo);
+		return obj !=null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
 	}
 	// -----------------------------------------------------------------------------------
 	
@@ -138,7 +135,7 @@ public class LancamentoResource {
 	@DeleteMapping("/{codigo}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)	// código de resposta do método em caso de sucesso
 	public void remover(@PathVariable Long codigo) {
-		lancamentoRepository.deleteById(codigo);
+		lancamentoRepository.delete(codigo);
 	}
 	// -----------------------------------------------------------------------------------
 	

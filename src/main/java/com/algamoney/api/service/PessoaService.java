@@ -40,11 +40,11 @@ public class PessoaService {
 	}
 	
 	private Pessoa buscarPessoaPeloCodigo(Long codigo) {
-		Optional<Pessoa> obj = pessoaRepository.findById(codigo);
-		if (obj.isEmpty()) {
+		Pessoa obj = pessoaRepository.findOne(codigo);
+		if (obj == null) {
 			throw new EmptyResultDataAccessException(1);
 		}
-		return obj.get();
+		return obj;
 	}
 	
 }

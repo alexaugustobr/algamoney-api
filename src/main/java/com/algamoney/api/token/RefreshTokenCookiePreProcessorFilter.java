@@ -1,21 +1,21 @@
 package com.algamoney.api.token;
 
-import java.io.IOException;
-import java.util.Map;
-import java.util.stream.Stream;
+import org.apache.catalina.util.ParameterMap;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
-
-import org.apache.catalina.util.ParameterMap;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.util.Map;
+import java.util.stream.Stream;
 
 // Classe para interceptar a requisição de Novo Access Token e pegar o Refresh Token que vem no cookie
 
@@ -26,6 +26,11 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)		// Ordered.HIGHEST_PRECEDENCE: alta prioridade, analisa a requisição antes de todo mundo
 public class RefreshTokenCookiePreProcessorFilter implements Filter {
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		
+	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -69,7 +74,12 @@ public class RefreshTokenCookiePreProcessorFilter implements Filter {
 		// Continua o processamento
 		chain.doFilter(req, response);
 	}
-	
+
+	@Override
+	public void destroy() {
+
+	}
+
 	// Classe local criada apenas com o propósito de manipular a requisição original para acrescentar o parâmetro refresh_token,
 	// já que não é possível manipulá-la diretamente 
 	static class MyServletRequestWrapper extends HttpServletRequestWrapper {

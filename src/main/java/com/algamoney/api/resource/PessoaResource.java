@@ -1,10 +1,9 @@
 package com.algamoney.api.resource;
 
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
+import com.algamoney.api.event.RecursoCriadoEvent;
+import com.algamoney.api.model.Pessoa;
+import com.algamoney.api.repository.PessoaRepository;
+import com.algamoney.api.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
@@ -23,10 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algamoney.api.event.RecursoCriadoEvent;
-import com.algamoney.api.model.Pessoa;
-import com.algamoney.api.repository.PessoaRepository;
-import com.algamoney.api.service.PessoaService;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 // Classe que disponibiliza recursos de /pessoas para os clientes
 
@@ -64,8 +61,8 @@ public class PessoaResource {
 	@GetMapping("/{codigo}")
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
 	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo) {
-		Optional<Pessoa> obj = pessoaRepository.findById(codigo);
-		return !obj.isEmpty() ? ResponseEntity.ok(obj.get()) : ResponseEntity.notFound().build();
+		Pessoa obj = pessoaRepository.getOne(codigo);
+		return obj != null ? ResponseEntity.ok(obj) : ResponseEntity.notFound().build();
 	}
 	// -------------------------------------------------------------------------------
 	
@@ -102,7 +99,7 @@ public class PessoaResource {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@PreAuthorize("hasAuthority('ROLE_REMOVER_PESSOA') and #oauth2.hasScope('write')")
 	public void remover(@PathVariable Long codigo) {
-		pessoaRepository.deleteById(codigo);
+		pessoaRepository.delete(codigo);
 	}
 
 	// ALTERAR PESSOA ----------------------------------------------------------------
